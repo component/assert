@@ -3,7 +3,9 @@
   "description": "Assertion lib",
   "version": "0.0.1",
   "keywords": ["assert", "test"],
-  "dependencies": {},
+  "dependencies": {
+    "component/stack": "*"
+  },
   "scripts": [
     "index.js"
   ]
