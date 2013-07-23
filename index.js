@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -33,7 +32,7 @@ module.exports = function(expr, msg){
   if (!msg) {
     if (Error.captureStackTrace) {
       var callsite = stack()[1];
-      var fn = callsite.fun.toString();
+      var fn = callsite.getFunctionName();
       var file = callsite.getFileName();
       var line = callsite.getLineNumber() - 1;
       var col = callsite.getColumnNumber() - 1;
