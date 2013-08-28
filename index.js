@@ -38,7 +38,7 @@ module.exports = function(expr, msg){
       var col = callsite.getColumnNumber() - 1;
       var src = getScript(file);
       line = src.split('\n')[line].slice(col);
-      expr = line.match(/assert\((.*)\)/)[1].trim();
+      expr = line.match(/assert\((.*?)[\)|$]/)[1].trim();
       msg = expr;
     } else {
       msg = 'assertion failed';
