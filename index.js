@@ -12,12 +12,16 @@ var stack = require('stack');
  * @api private
  */
 
-function getScript(script) {
-  var xhr = new XMLHttpRequest;
-  xhr.open('GET', script, false);
-  xhr.send(null);
-  return xhr.responseText;
-}
+var getScript = typeof window == 'undefined'
+  ? function(script){
+    return require('fs').readFileSync(script, 'utf8');
+  }
+  : function(script){
+    var xhr = new XMLHttpRequest;
+    xhr.open('GET', script, false);
+    xhr.send(null);
+    return xhr.responseText;
+  }
 
 /**
  * Assert `expr` with optional failure `msg`.
