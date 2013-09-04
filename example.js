@@ -3,7 +3,11 @@
  * Module dependencies.
  */
 
-var assert = require('assert');
+try {
+	var assert = require('./index.js');
+} catch (e) {
+	var assert = require('assert');
+}
 
 function test() {
   var user = { name: 'Tobi' };
