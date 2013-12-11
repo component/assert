@@ -5,7 +5,8 @@
   "version": "0.2.0",
   "keywords": ["assert", "test"],
   "dependencies": {
-    "component/stack": "*"
+    "component/stack": "*",
+    "jkroso/equals": "*"
   },
   "scripts": [
     "index.js"
