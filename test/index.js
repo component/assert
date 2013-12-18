@@ -8,6 +8,25 @@ describe('assert', function () {
     if (err) throw err;
   })
 
+  it('should respect custom msg', function(){
+    try {
+      assert(false, 'baz');
+    } catch (e) {
+      if ('baz' == e.message) return;
+      throw new Error('fail');
+    }
+  })
+
+  it('should supply default message', function(){
+    try {
+      assert( 0 + 0 );
+    } catch (e) {
+      if (19 == e.code) return;
+      if ('0 + 0' == e.message) return;
+      throw new Error('fail');
+    }
+  })
+
   it('should fail', function () {
     var threw = false;
     try {

@@ -16,7 +16,7 @@ var equals = require('equals');
 
 module.exports = exports = function (expr, msg) {
   if (expr) return;
-  throw new Error(message());
+  throw new Error(msg || message());
 };
 
 /**
@@ -30,7 +30,7 @@ module.exports = exports = function (expr, msg) {
 
 exports.equal = function (actual, expected, msg) {
   if (actual == expected) return;
-  throw new Error(message());
+  throw new Error(msg || message());
 };
 
 /**
@@ -44,7 +44,7 @@ exports.equal = function (actual, expected, msg) {
 
 exports.notEqual = function (actual, expected, msg) {
   if (actual != expected) return;
-  throw new Error(message());
+  throw new Error(msg || message());
 };
 
 /**
@@ -58,7 +58,7 @@ exports.notEqual = function (actual, expected, msg) {
 
 exports.deepEqual = function (actual, expected, msg) {
   if (equals(actual, expected)) return;
-  throw new Error(message());
+  throw new Error(msg || message());
 };
 
 /**
@@ -72,7 +72,7 @@ exports.deepEqual = function (actual, expected, msg) {
 
 exports.notDeepEqual = function (actual, expected, msg) {
   if (!equals(actual, expected)) return;
-  throw new Error(message());
+  throw new Error(msg || message());
 };
 
 /**
@@ -86,7 +86,7 @@ exports.notDeepEqual = function (actual, expected, msg) {
 
 exports.strictEqual = function (actual, expected, msg) {
   if (actual === expected) return;
-  throw new Error(message());
+  throw new Error(msg || message());
 };
 
 /**
@@ -100,7 +100,7 @@ exports.strictEqual = function (actual, expected, msg) {
 
 exports.notStrictEqual = function (actual, expected, msg) {
   if (actual !== expected) return;
-  throw new Error(message());
+  throw new Error(msg || message());
 };
 
 /**
@@ -119,8 +119,8 @@ exports.throws = function (block, error, msg) {
   } catch (e) {
     err = e;
   }
-  if (!err) throw new Error(message());
-  if (error && !(err instanceof error)) throw new Error(message());
+  if (!err) throw new Error(msg || message());
+  if (error && !(err instanceof error)) throw new Error(msg || message());
 };
 
 /**
@@ -139,8 +139,8 @@ exports.doesNotThrow = function (block, error, msg) {
   } catch (e) {
     err = e;
   }
-  if (error && (err instanceof error)) throw new Error(message());
-  if (err) throw new Error(message());
+  if (error && (err instanceof error)) throw new Error(msg || message());
+  if (err) throw new Error(msg || message());
 };
 
 /**
@@ -159,7 +159,8 @@ function message() {
   var col = callsite.getColumnNumber() - 1;
   var src = getScript(file);
   line = src.split('\n')[line].slice(col);
-  return line.match(/assert\((.*)\)/)[1].trim();
+  var m = line.match(/assert\((.*)\)/);
+  return m && m[1].trim();
 }
 
 /**
