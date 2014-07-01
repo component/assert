@@ -8,7 +8,13 @@ components: component.json
 clean:
 	@rm -fr build components
 
-test: build
-	@open test/index.html
+node_modules: package.json
+	@npm install
 
-.PHONY: clean test
+server: node_modules build
+	@node test/server.js
+
+test: build
+	@open http://localhost:7575
+
+.PHONY: clean server test

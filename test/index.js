@@ -19,9 +19,8 @@ describe('assert', function () {
 
   it('should supply default message', function(){
     try {
-      assert( 0 + 0 );
+      assert(0 + 0);
     } catch (e) {
-      if (19 == e.code) return;
       if ('0 + 0' == e.message) return;
       throw new Error('fail');
     }
