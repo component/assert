@@ -1,4 +1,10 @@
 
+0.4.0 / 2014-06-30
+==================
+
+ * fix default assertion messages
+ * add testing server
+
 0.3.1 / 2014-06-03
 ==================
 
