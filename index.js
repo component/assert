@@ -3,8 +3,9 @@
  * Module dependencies.
  */
 
-var stack = require('stack');
 var equals = require('equals');
+var fmt = require('fmt');
+var stack = require('stack');
 
 /**
  * Assert `expr` with optional failure `msg`.
@@ -30,7 +31,7 @@ module.exports = exports = function (expr, msg) {
 
 exports.equal = function (actual, expected, msg) {
   if (actual == expected) return;
-  throw new Error(msg || message());
+  throw new Error(msg || fmt('Expected %o to equal %o.', actual, expected));
 };
 
 /**
@@ -44,7 +45,7 @@ exports.equal = function (actual, expected, msg) {
 
 exports.notEqual = function (actual, expected, msg) {
   if (actual != expected) return;
-  throw new Error(msg || message());
+  throw new Error(msg || fmt('Expected %o not to equal %o.', actual, expected));
 };
 
 /**
@@ -58,7 +59,7 @@ exports.notEqual = function (actual, expected, msg) {
 
 exports.deepEqual = function (actual, expected, msg) {
   if (equals(actual, expected)) return;
-  throw new Error(msg || message());
+  throw new Error(msg || fmt('Expected %o to deeply equal %o.', actual, expected));
 };
 
 /**
@@ -72,7 +73,7 @@ exports.deepEqual = function (actual, expected, msg) {
 
 exports.notDeepEqual = function (actual, expected, msg) {
   if (!equals(actual, expected)) return;
-  throw new Error(msg || message());
+  throw new Error(msg || fmt('Expected %o not to deeply equal %o.', actual, expected));
 };
 
 /**
@@ -86,7 +87,7 @@ exports.notDeepEqual = function (actual, expected, msg) {
 
 exports.strictEqual = function (actual, expected, msg) {
   if (actual === expected) return;
-  throw new Error(msg || message());
+  throw new Error(msg || fmt('Expected %o to strictly equal %o.', actual, expected));
 };
 
 /**
@@ -100,7 +101,7 @@ exports.strictEqual = function (actual, expected, msg) {
 
 exports.notStrictEqual = function (actual, expected, msg) {
   if (actual !== expected) return;
-  throw new Error(msg || message());
+  throw new Error(msg || fmt('Expected %o not to strictly equal %o.', actual, expected));
 };
 
 /**
@@ -119,8 +120,11 @@ exports.throws = function (block, error, msg) {
   } catch (e) {
     err = e;
   }
-  if (!err) throw new Error(msg || message());
-  if (error && !(err instanceof error)) throw new Error(msg || message());
+
+  if (!err) throw new Error(msg || fmt('Expected %s to throw an error.', block.toString()));
+  if (error && !(err instanceof error)) {
+    throw new Error(msg || fmt('Expected %s to throw an %o.', block.toString(), error));
+  }
 };
 
 /**
@@ -139,8 +143,11 @@ exports.doesNotThrow = function (block, error, msg) {
   } catch (e) {
     err = e;
   }
-  if (error && (err instanceof error)) throw new Error(msg || message());
-  if (err) throw new Error(msg || message());
+
+  if (err) throw new Error(msg || fmt('Expected %s not to throw an error.', block.toString()));
+  if (error && (err instanceof error)) {
+    throw new Error(msg || fmt('Expected %s not to throw an %o.', block.toString(), error));
+  }
 };
 
 /**
@@ -157,7 +164,7 @@ function message() {
   var file = callsite.getFileName();
   var line = callsite.getLineNumber() - 1;
   var col = callsite.getColumnNumber() - 1;
-  var src = getScript(file);
+  var src = get(file);
   line = src.split('\n')[line].slice(col);
   var m = line.match(/assert\((.*)\)/);
   return m && m[1].trim();
@@ -171,7 +178,7 @@ function message() {
  * @api private
  */
 
-function getScript(script) {
+function get(script) {
   var xhr = new XMLHttpRequest;
   xhr.open('GET', script, false);
   xhr.send(null);
