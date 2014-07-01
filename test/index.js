@@ -2,183 +2,187 @@
 var assert = require('assert')
 var equals = require('equals');
 
-describe('assert', function () {
-  it('should pass', function () {
-    var err = assert(true);
-    if (err) throw err;
-  })
+describe('assert', function(){
+  it('should pass', function(){
+    try {
+      assert(true);
+    } catch (e) {
+      throw new Error('fail');
+    }
+  });
+
+  it('should fail', function(){
+    try {
+      assert(false);
+      throw new Error('fail');
+    } catch (e) {
+      if ('fail' == e.message) throw e;
+    }
+  });
 
   it('should respect custom msg', function(){
     try {
       assert(false, 'baz');
-    } catch (e) {
-      if ('baz' == e.message) return;
       throw new Error('fail');
+    } catch (e) {
+      if ('baz' != e.message) throw new Error('fail');
     }
-  })
+  });
 
   it('should supply default message', function(){
     try {
       assert(0 + 0);
-    } catch (e) {
-      if ('0 + 0' == e.message) return;
       throw new Error('fail');
-    }
-  })
-
-  it('should fail', function () {
-    var threw = false;
-    try {
-      var err = assert(false);
     } catch (e) {
-      threw = true;
+      if ('0 + 0' != e.message) throw new Error('fail');
     }
-    if (!threw) throw new Error('fail');
-  })
+  });
 
-  describe('.equal', function () {
-    it('should pass', function () {
-      var err = assert.equal(true, true);
-      if (err) throw err;
-    })
+  describe('.equal', function(){
+    it('should pass', function(){
+      assert.equal(true, true);
+    });
 
-    it('should fail', function () {
-      var obj = {};
-      var threw = false;
+    it('should fail', function(){
       try {
-        var err = assert.equal(obj, {});
+        assert.equal({}, {});
+        throw new Error('fail');
       } catch (e) {
-        threw = true;
+        if ('fail' == e.message) throw e;
       }
-      if (!threw) throw new Error('fail');
-    })
-  })
+    });
+  });
 
-  describe('.notEqual', function () {
-    it('should pass', function () {
-      var obj = {};
-      var err = assert.notEqual(obj, {});
-      if (err) throw err;
-    })
-
-    it('should fail', function () {
-      var threw = false;
+  describe('.notEqual', function(){
+    it('should pass', function(){
       try {
-        var err = assert.notEqual(true, true);
+        assert.notEqual({}, {});
       } catch (e) {
-        threw = true;
+        throw new Error('fail');
       }
-      if (!threw) throw new Error('fail');
-    })
-  })
+    });
 
-  describe('.deepEqual', function () {
-    it('should pass', function () {
-      var arr = ['a', 'b'];
-      var err = assert.deepEqual(arr, ['a', 'b']);
-      if (err) throw err;
-    })
-
-    it('should fail', function () {
-      var arr = ['a', 'b'];
-      var threw = false;
+    it('should fail', function(){
       try {
-        var err = assert.deepEqual(arr, [1, 2]);
+        assert.notEqual(true, true);
+        throw new Error('fail');
       } catch (e) {
-        threw = true;
+        if ('fail' == e.message) throw e;
       }
-      if (!threw) throw new Error('fail');
-    })
-  })
+    });
+  });
 
-  describe('.notDeepEqual', function () {
-    it('should pass', function () {
-      var arr = ['a', 'b'];
-      var err = assert.notDeepEqual(arr, [1, 2]);
-      if (err) throw err;
-    })
-
-    it('should fail', function () {
-      var arr = ['a', 'b'];
-      var threw = false;
+  describe('.deepEqual', function(){
+    it('should pass', function(){
       try {
-        var err = assert.notDeepEqual(arr, ['a', 'b']);
+        assert.deepEqual(['a', 'b'], ['a', 'b']);
       } catch (e) {
-        threw = true;
+        throw new Error('fail');
       }
-      if (!threw) throw new Error('fail');
-    })
-  })
+    });
 
-  describe('.strictEqual', function () {
-    it('should pass', function () {
-      var err = assert.strictEqual('1', '1');
-      if (err) throw err;
-    })
-
-    it('should fail', function () {
-      var threw = false;
+    it('should fail', function(){
       try {
-        var err = assert.strictEqual(1, '1');
+        var err = assert.deepEqual(['a', 'b'], [1, 2]);
+        throw new Error('fail');
       } catch (e) {
-        threw = true;
+        if ('fail' == e.message) throw e;
       }
-      if (!threw) throw new Error('fail');
-    })
-  })
+    });
+  });
 
-  describe('.notStrictEqual', function () {
-    it('should pass', function () {
-      var err = assert.notStrictEqual(1, '1');
-      if (err) throw err;
-    })
+  describe('.notDeepEqual', function(){
+    it('should pass', function(){
+      try {
+        assert.notDeepEqual(['a', 'b'], [1, 2]);
+      } catch (e) {
+        throw new Error('fail');
+      }
+    });
 
-    it('should fail', function () {
-      var threw = false;
+    it('should fail', function(){
+      try {
+        assert.notDeepEqual(['a', 'b'], ['a', 'b']);
+        throw new Error('fail');
+      } catch (e) {
+        if ('fail' == e.message) throw e;
+      }
+    });
+  });
+
+  describe('.strictEqual', function(){
+    it('should pass', function(){
+      try {
+        assert.strictEqual('1', '1');
+      } catch (e) {
+        throw new Error('fail');
+      }
+    });
+
+    it('should fail', function(){
+      try {
+        assert.strictEqual(1, '1');
+        throw new Error('fail');
+      } catch (e) {
+        if ('fail' == e.message) throw e;
+      }
+    });
+  });
+
+  describe('.notStrictEqual', function(){
+    it('should pass', function(){
+      try {
+        assert.notStrictEqual(1, '1');
+      } catch (e) {
+        throw new Error('fail');
+      }
+    });
+
+    it('should fail', function(){
       try {
         var err = assert.notStrictEqual('1', '1');
+        throw new Error('fail');
       } catch (e) {
-        threw = true;
+        if ('fail' == e.message) throw e;
       }
-      if (!threw) throw new Error('fail');
-    })
-  })
+    });
+  });
 
-  describe('.throws', function () {
-    it('should pass', function () {
-      function fn () { throw new Error; }
-      var err = assert.throws(fn);
-      if (err) throw err;
-    })
-
-    it('should fail', function () {
-      function fn () {}
-      var threw = false;
+  describe('.throws', function(){
+    it('should pass', function(){
       try {
-        var err = assert.throws(fn);
+        assert.throws(function(){ throw new Error; });
       } catch (e) {
-        threw = true;
+        throw new Error('fail');
       }
-      if (!threw) throw new Error('fail');
-    })
-  })
+    });
 
-  describe('.doesNotThrow', function () {
-    it('should pass', function () {
-      function fn () {}
-      var err = assert.doesNotThrow(fn);
-      if (err) throw err;
-    })
-
-    it('should fail', function () {
-      function fn () { throw new Error; }
-      var threw = false;
+    it('should fail', function(){
       try {
-        var err = assert.doesNotThrow(fn);
+        assert.throws(function(){});
+        throw new Error('fail');
       } catch (e) {
-        threw = true;
+        if ('fail' == e.message) throw e;
       }
-      if (!threw) throw new Error('fail');
-    })
-  })
-})
+    });
+  });
+
+  describe('.doesNotThrow', function(){
+    it('should pass', function(){
+      try {
+        assert.doesNotThrow(function(){});
+      } catch (e) {
+        throw new Error('fail');
+      }
+    });
+
+    it('should fail', function(){
+      try {
+        assert.doesNotThrow(function(){ throw new Error; });
+        throw new Error('fail');
+      } catch (e) {
+        if ('fail' == e.message) throw e;
+      }
+    });
+  });
+});
