@@ -6,7 +6,8 @@
   "keywords": ["assert", "test"],
   "dependencies": {
     "component/stack": "*",
-    "jkroso/equals": "*"
+    "jkroso/equals": "*",
+    "yields/fmt": "*"
   },
   "scripts": [
     "index.js"
