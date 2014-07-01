@@ -15,7 +15,9 @@ describe('assert', function(){
     try {
       assert(false);
       throw new Error('fail');
-    } catch (e) {}
+    } catch (e) {
+      if ('fail' == e.message) throw e;
+    }
   });
 
   it('should respect custom msg', function(){
@@ -45,7 +47,9 @@ describe('assert', function(){
       try {
         assert.equal({}, {});
         throw new Error('fail');
-      } catch (e) {}
+      } catch (e) {
+        if ('fail' == e.message) throw e;
+      }
     });
   });
 
@@ -62,7 +66,9 @@ describe('assert', function(){
       try {
         assert.notEqual(true, true);
         throw new Error('fail');
-      } catch (e) {}
+      } catch (e) {
+        if ('fail' == e.message) throw e;
+      }
     });
   });
 
@@ -79,7 +85,9 @@ describe('assert', function(){
       try {
         var err = assert.deepEqual(['a', 'b'], [1, 2]);
         throw new Error('fail');
-      } catch (e) {}
+      } catch (e) {
+        if ('fail' == e.message) throw e;
+      }
     });
   });
 
@@ -96,7 +104,9 @@ describe('assert', function(){
       try {
         assert.notDeepEqual(['a', 'b'], ['a', 'b']);
         throw new Error('fail');
-      } catch (e) {}
+      } catch (e) {
+        if ('fail' == e.message) throw e;
+      }
     });
   });
 
@@ -113,7 +123,9 @@ describe('assert', function(){
       try {
         assert.strictEqual(1, '1');
         throw new Error('fail');
-      } catch (e) {}
+      } catch (e) {
+        if ('fail' == e.message) throw e;
+      }
     });
   });
 
@@ -130,7 +142,9 @@ describe('assert', function(){
       try {
         var err = assert.notStrictEqual('1', '1');
         throw new Error('fail');
-      } catch (e) {}
+      } catch (e) {
+        if ('fail' == e.message) throw e;
+      }
     });
   });
 
@@ -145,9 +159,11 @@ describe('assert', function(){
 
     it('should fail', function(){
       try {
-        assert.throws(function(){ throw new Error; });
+        assert.throws(function(){});
         throw new Error('fail');
-      } catch (e) {}
+      } catch (e) {
+        if ('fail' == e.message) throw e;
+      }
     });
   });
 
@@ -164,7 +180,9 @@ describe('assert', function(){
       try {
         assert.doesNotThrow(function(){ throw new Error; });
         throw new Error('fail');
-      } catch (e) {}
+      } catch (e) {
+        if ('fail' == e.message) throw e;
+      }
     });
   });
 });
