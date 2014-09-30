@@ -17,7 +17,7 @@ var stack = require('stack');
 
 module.exports = exports = function (expr, msg) {
   if (expr) return;
-  throw new Error(msg || message());
+  throw error(msg || message());
 };
 
 /**
@@ -31,7 +31,7 @@ module.exports = exports = function (expr, msg) {
 
 exports.equal = function (actual, expected, msg) {
   if (actual == expected) return;
-  throw new Error(msg || fmt('Expected %o to equal %o.', actual, expected));
+  throw error(msg || fmt('Expected %o to equal %o.', actual, expected), actual, expected);
 };
 
 /**
@@ -45,7 +45,7 @@ exports.equal = function (actual, expected, msg) {
 
 exports.notEqual = function (actual, expected, msg) {
   if (actual != expected) return;
-  throw new Error(msg || fmt('Expected %o not to equal %o.', actual, expected));
+  throw error(msg || fmt('Expected %o not to equal %o.', actual, expected));
 };
 
 /**
@@ -59,7 +59,7 @@ exports.notEqual = function (actual, expected, msg) {
 
 exports.deepEqual = function (actual, expected, msg) {
   if (equals(actual, expected)) return;
-  throw new Error(msg || fmt('Expected %o to deeply equal %o.', actual, expected));
+  throw error(msg || fmt('Expected %o to deeply equal %o.', actual, expected), actual, expected);
 };
 
 /**
@@ -73,7 +73,7 @@ exports.deepEqual = function (actual, expected, msg) {
 
 exports.notDeepEqual = function (actual, expected, msg) {
   if (!equals(actual, expected)) return;
-  throw new Error(msg || fmt('Expected %o not to deeply equal %o.', actual, expected));
+  throw error(msg || fmt('Expected %o not to deeply equal %o.', actual, expected));
 };
 
 /**
@@ -87,7 +87,7 @@ exports.notDeepEqual = function (actual, expected, msg) {
 
 exports.strictEqual = function (actual, expected, msg) {
   if (actual === expected) return;
-  throw new Error(msg || fmt('Expected %o to strictly equal %o.', actual, expected));
+  throw error(msg || fmt('Expected %o to strictly equal %o.', actual, expected), actual, expected);
 };
 
 /**
@@ -101,7 +101,7 @@ exports.strictEqual = function (actual, expected, msg) {
 
 exports.notStrictEqual = function (actual, expected, msg) {
   if (actual !== expected) return;
-  throw new Error(msg || fmt('Expected %o not to strictly equal %o.', actual, expected));
+  throw error(msg || fmt('Expected %o not to strictly equal %o.', actual, expected));
 };
 
 /**
@@ -121,9 +121,9 @@ exports.throws = function (block, error, msg) {
     err = e;
   }
 
-  if (!err) throw new Error(msg || fmt('Expected %s to throw an error.', block.toString()));
+  if (!err) throw error(msg || fmt('Expected %s to throw an error.', block.toString()));
   if (error && !(err instanceof error)) {
-    throw new Error(msg || fmt('Expected %s to throw an %o.', block.toString(), error));
+    throw error(msg || fmt('Expected %s to throw an %o.', block.toString(), error));
   }
 };
 
@@ -144,9 +144,9 @@ exports.doesNotThrow = function (block, error, msg) {
     err = e;
   }
 
-  if (err) throw new Error(msg || fmt('Expected %s not to throw an error.', block.toString()));
+  if (err) throw error(msg || fmt('Expected %s not to throw an error.', block.toString()));
   if (error && (err instanceof error)) {
-    throw new Error(msg || fmt('Expected %s not to throw an %o.', block.toString(), error));
+    throw error(msg || fmt('Expected %s not to throw an %o.', block.toString(), error));
   }
 };
 
@@ -183,4 +183,21 @@ function get(script) {
   xhr.open('GET', script, false);
   xhr.send(null);
   return xhr.responseText;
+}
+
+/**
+ * Error with `msg`, `actual` and `expected`.
+ *
+ * @param {String} msg
+ * @param {Mixed} actual
+ * @param {Mixed} expected
+ * @return {Error}
+ */
+
+function error(msg, actual, expected){
+  var err = new Error(msg);
+  err.showDiff = 3 == arguments.length;
+  err.actual = actual;
+  err.expected = expected;
+  return err;
 }
