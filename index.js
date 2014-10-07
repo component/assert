@@ -113,17 +113,17 @@ exports.notStrictEqual = function (actual, expected, msg) {
  * @api public
  */
 
-exports.throws = function (block, error, msg) {
-  var err;
+exports.throws = function (block, err, msg) {
+  var threw;
   try {
     block();
   } catch (e) {
-    err = e;
+    threw = e;
   }
 
-  if (!err) throw error(msg || fmt('Expected %s to throw an error.', block.toString()));
-  if (error && !(err instanceof error)) {
-    throw error(msg || fmt('Expected %s to throw an %o.', block.toString(), error));
+  if (!threw) throw error(msg || fmt('Expected %s to throw an error.', block.toString()));
+  if (err && !(threw instanceof err)) {
+    throw error(msg || fmt('Expected %s to throw an %o.', block.toString(), err));
   }
 };
 
@@ -136,17 +136,17 @@ exports.throws = function (block, error, msg) {
  * @api public
  */
 
-exports.doesNotThrow = function (block, error, msg) {
-  var err;
+exports.doesNotThrow = function (block, err, msg) {
+  var threw;
   try {
     block();
   } catch (e) {
-    err = e;
+    threw = e;
   }
 
-  if (err) throw error(msg || fmt('Expected %s not to throw an error.', block.toString()));
-  if (error && (err instanceof error)) {
-    throw error(msg || fmt('Expected %s not to throw an %o.', block.toString(), error));
+  if (threw) throw error(msg || fmt('Expected %s not to throw an error.', block.toString()));
+  if (err && (threw instanceof err)) {
+    throw error(msg || fmt('Expected %s not to throw an %o.', block.toString(), err));
   }
 };
 
