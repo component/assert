@@ -7,7 +7,7 @@
   "dependencies": {
     "component/stack": "*",
     "jkroso/equals": "*",
-    "yields/fmt": "0.0.2"
+    "yields/fmt": "0.1.0"
   },
   "scripts": [
     "index.js"
