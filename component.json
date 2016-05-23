@@ -8,8 +8,8 @@
     "test"
   ],
   "dependencies": {
-    "component/stack": "*",
-    "jkroso/equals": "*",
+    "component/stack": "0.0.1",
+    "jkroso/equals": "1.0.2",
     "yields/fmt": "0.1.0"
   },
   "scripts": [
