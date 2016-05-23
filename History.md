@@ -1,4 +1,9 @@
 
+0.5.3 / 2016-05-23
+==================
+
+  * deps: downgrade `jkroso/assert` to 1.0.1 (1.0.2 has a breaking change)
+
 0.5.2 / 2016-05-23
 ==================
 
