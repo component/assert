@@ -1,4 +1,9 @@
 
+0.5.4 / 2016-05-27
+==================
+
+  * deps: upgrade to `jkroso/assert` to 1.0.4 which pins a version of jkroso/equals
+
 0.5.3 / 2016-05-23
 ==================
 
